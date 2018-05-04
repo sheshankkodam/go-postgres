@@ -1,0 +1,5 @@
+# IDE files
+*.idea
+
+# test files
+*.out
