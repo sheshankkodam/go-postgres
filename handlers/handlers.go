@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"fmt"
-	"net/http"
 	"github.com/sheshankkodam/go-postgres/config"
+	"net/http"
 )
 
 // HelloHandler takes a GET parameter "name" and responds // with Hello <name>! in plaintext

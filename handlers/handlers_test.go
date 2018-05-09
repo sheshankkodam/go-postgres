@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"testing"
-	"net/http/httptest"
-	"net/http"
 	"github.com/sheshankkodam/go-postgres/config"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 )
 
 func TestHelloHandler(t *testing.T) {
