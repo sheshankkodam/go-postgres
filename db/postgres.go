@@ -19,21 +19,26 @@ type PostgresOperations interface {
 }
 
 type PostgresService struct {
+	dbConn *sql.DB
 	Ops PostgresOperations
 }
 
-func (p *PostgresService) Insert(user, departmentName, createdDate string) error {
-	dbinfo := fmt.Sprintf("user=%s dbname=%s sslmode=disable", dbUser, dbName)
-	dbClient, err := sql.Open("postgres", dbinfo)
+func NewPostgresService() (*PostgresService, error) {
+	dbInfo := fmt.Sprintf("user=%s dbname=%s sslmode=disable", dbUser, dbName)
+	dbClient, err := sql.Open("postgres", dbInfo)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	log.Println("Database initiated successfully")
+	p := &PostgresService{dbConn:dbClient}
+	return p, nil
+}
+
+func (p *PostgresService) Insert(user, departmentName, createdDate string) error {
 	var lastInsertId int
-	err = dbClient.QueryRow(insertQuery, user, departmentName, createdDate).Scan(&lastInsertId)
-	if err != nil {
+	if err := p.dbConn.QueryRow(insertQuery, user, departmentName, createdDate).Scan(&lastInsertId); err != nil {
 		return err
 	}
-	log.Println("last inserted id =", lastInsertId)
+	log.Println("Inserted successfully")
 	return nil
 }

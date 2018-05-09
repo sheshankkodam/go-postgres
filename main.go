@@ -12,16 +12,14 @@ func main() {
 	log.Println("Hello go-postgres")
 	http.HandleFunc("/home", handlers.HelloHandler)
 
-	go initDb()
-
-	fmt.Println("Listening on port :3333")
-	http.ListenAndServe(":3333", nil)
-}
-
-func initDb()  {
-	log.Println("Initiating database")
-	p := db.PostgresService{}
+	p, err := db.NewPostgresService()
+	if err != nil {
+		log.Fatalf("could not initiate postgres service, error=%v", err)
+	}
 	if err := p.Insert("sheshank", "SSE", "05-08-2018"); err != nil {
 		fmt.Printf("Error inserting, err=%v", err)
 	}
+
+	fmt.Println("Listening on port :3333")
+	http.ListenAndServe(":3333", nil)
 }
